@@ -1,5 +1,21 @@
 frappe.ui.form.on("Metrc Config", {
 	refresh(frm) {
+		frm.add_custom_button(__("Sync Tags Now"), () =>
+			frappe.call({
+				method: "metrc_customizations.tag_sync.sync_tags_now",
+				freeze: true,
+				freeze_message: __("Pulling available tags from Metrc…"),
+				callback(r) {
+					const d = r.message || {};
+					frappe.msgprint({
+						title: __("Tag sync"),
+						indicator: "green",
+						message: __("{0} new tags added.", [d.added || 0]) +
+							"<br><br>" + Object.entries(d.report || {}).map(([k, v]) => `${frappe.utils.escape_html(k)}: ${frappe.utils.escape_html(String(v))}`).join("<br>"),
+					});
+				},
+			})
+		);
 		if (frm.__status_html) {
 			frm.get_field("connection_status").$wrapper.html(frm.__status_html);
 		}

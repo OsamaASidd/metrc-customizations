@@ -11,18 +11,15 @@
   "muid",
   "status",
   "tag_category",
-  "item_code",
   "current_qty",
-  "uom",
   "column_break_1",
-  "warehouse",
   "last_transaction_type",
   "last_transaction_id",
   "last_updated"
  ],
  "fields": [
   {
-   "description": "Full 13–15 digit physical METRC tag code. Primary key / Link target used throughout the system, including as the Inventory Dimension value.",
+   "description": "Full 13\u201315 digit physical METRC tag code. Primary key / Link target used throughout the system, including as the Inventory Dimension value.",
    "fieldname": "tag_code",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -40,22 +37,14 @@
    "read_only": 1
   },
   {
-   "default": "Received",
+   "default": "Available",
    "description": "Metrc tag state. Whether a Used tag still holds stock is Current Qty.",
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Status",
-   "options": "Received\nUsed\nVoid"
-  },
-  {
-   "fieldname": "item_code",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Item Code",
-   "options": "Item"
+   "options": "Available\nUsed\nVoided"
   },
   {
    "description": "Cached display value kept in sync with the Stock Ledger balance for this tag. Stock Ledger Entry remains the source of truth.",
@@ -66,22 +55,8 @@
    "read_only": 1
   },
   {
-   "fieldname": "uom",
-   "fieldtype": "Link",
-   "label": "UOM",
-   "options": "UOM"
-  },
-  {
    "fieldname": "column_break_1",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "warehouse",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Warehouse",
-   "options": "Warehouse"
   },
   {
    "description": "DocType name of the most recent transaction touching this tag.",
@@ -114,7 +89,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-08 13:26:41.126058",
+ "modified": "2026-10-14 11:43:04.487249",
  "modified_by": "Administrator",
  "module": "Metrc Customizations",
  "name": "Metrc Tag",

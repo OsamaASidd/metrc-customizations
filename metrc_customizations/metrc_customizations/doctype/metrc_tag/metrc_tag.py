@@ -262,18 +262,18 @@ def sync_metric_tag(tag_name, item_code, warehouse, txn_doctype, txn_name):
 	tag.current_qty = balance
 	tag.item_code = item_code
 	tag.warehouse = warehouse
-	# Status follows Metrc's tag states: Received (never used), Used, Void.
+	# Status follows Metrc's tag states: Available (never used), Used, Voided.
 	# Whether a Used tag still holds stock is current_qty, not the status.
 	if balance > 0:
 		tag.status = "Used"
 	elif txn_doctype == "Stock Reconciliation" and not _tag_has_history(tag_name):
-		# Cancelling the reconciliation that first used a Received tag hands the
+		# Cancelling the reconciliation that first used an Available tag hands the
 		# tag back, instead of burning it as Used.
-		tag.status = "Received"
+		tag.status = "Available"
 	else:
 		tag.status = "Used"
 	if balance > 0 and not tag.get("custom_license"):
-		# A Received tag may have no License until it first holds stock.
+		# An Available tag may have no License until it first holds stock.
 		license = frappe.db.get_value("Warehouse", warehouse, "custom_metrc_license_number")
 		if license:
 			tag.custom_license = license
@@ -291,14 +291,14 @@ def sync_metric_tags(doc, method=None):
 
 
 def validate_metric_tag_status(doc, method=None):
-	"""before_submit hook — block submission if a row's tag is Void, or Used and emptied."""
+	"""before_submit hook — block submission if a row's tag is Voided, or Used and emptied."""
 	for tag_name, _item_code, _warehouse in get_touched_tags(doc):
 		tag = frappe.db.get_value("Metrc Tag", tag_name, ["status", "current_qty"], as_dict=True)
 		if not tag:
 			continue
-		if tag.status == "Void":
+		if tag.status == "Voided":
 			frappe.throw(
-				_("Row referencing Metrc Tag {0} cannot be submitted — that tag is Void.").format(
+				_("Row referencing Metrc Tag {0} cannot be submitted — that tag is Voided.").format(
 					frappe.bold(tag_name)
 				)
 			)
@@ -501,21 +501,3 @@ def get_metric_tag_scan(search_value, child_doctype=None):
 		"row_tag_fieldname": get_row_tag_fieldname(child_doctype) if child_doctype else None,
 		"rows": rows,
 	}
-
-
-@frappe.whitelist()
-def get_company_licenses():
-	"""Active licenses from every Company's Licenses table, for the License picker."""
-	rows = frappe.get_all(
-		"Company License",
-		filters={"parenttype": "Company", "is_active": 1},
-		fields=["license_number"],
-		order_by="parent, idx",
-	)
-	seen, out = set(), []
-	for r in rows:
-		if r.license_number in seen:
-			continue
-		seen.add(r.license_number)
-		out.append({"value": r.license_number, "label": r.license_number})
-	return out

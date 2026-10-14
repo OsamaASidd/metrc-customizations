@@ -264,3 +264,37 @@ fixtures = [
     {"dt": "Custom Field", "filters": [["module", "=", "Metrc Customizations"]]},
     {"dt": "Property Setter", "filters": [["module", "=", "Metrc Customizations"]]},
 ]
+
+doctype_js = {
+    "Purchase Receipt": "public/js/purchase_receipt.js",
+    "Stock Entry": "public/js/stock_entry.js",
+    "Delivery Note": "public/js/delivery_note.js",
+}
+
+doc_events = {
+    "Purchase Receipt": {
+        "validate": "metrc_customizations.purchase_receipt.validate",
+        "on_submit": "metrc_customizations.purchase_receipt.on_submit",
+        "on_cancel": "metrc_customizations.purchase_receipt.on_cancel",
+    },
+    "Stock Entry": {
+        "validate": "metrc_customizations.stock_entry.validate",
+        "on_submit": "metrc_customizations.stock_entry.on_submit",
+        "on_cancel": "metrc_customizations.stock_entry.on_cancel",
+    },
+    "Delivery Note": {
+        "validate": "metrc_customizations.delivery_note.validate",
+        "on_submit": "metrc_customizations.delivery_note.on_submit",
+        "on_cancel": "metrc_customizations.delivery_note.on_cancel",
+    },
+    "Company": {
+        "validate": "metrc_customizations.purchase_receipt.validate_company_licenses",
+    },
+}
+
+scheduler_events = {
+    "cron": {
+        # New Metrc tags appear as Available Metrc Tags within 15 minutes.
+        "*/15 * * * *": ["metrc_customizations.tag_sync.sync_tags"],
+    },
+}

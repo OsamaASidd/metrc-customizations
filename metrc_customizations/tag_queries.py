@@ -1,10 +1,10 @@
 import frappe
 
 # forced_status values the wrappers below pass, mapped onto Metrc's tag states:
-# "Active" = a Used tag still holding stock, "Unused" = a Received tag.
+# "Active" = a Used tag still holding stock, "Unused" = an Available tag.
 STATE_CONDITIONS = {
     "Active": "mt.status = 'Used' and mt.current_qty > 0",
-    "Unused": "mt.status = 'Received'",
+    "Unused": "mt.status = 'Available'",
 }
 
 
@@ -41,7 +41,7 @@ def _tags_for_warehouse(doctype, txt, searchfield, start, page_len, filters,
         # unfiltered list someone could pick from by mistake.
         license_condition = "and 1=0"
 
-    status_condition = "and mt.status != 'Void'"
+    status_condition = "and mt.status != 'Voided'"
     if forced_status:
         status_condition = f"and {STATE_CONDITIONS[forced_status]}"
     elif status:
@@ -150,10 +150,10 @@ def reconcile_tags_for_warehouse(doctype, txt, searchfield, start, page_len, fil
           and (
             (mt.status = 'Used' and mt.current_qty > 0 and mt.custom_license = %(license)s
              and (%(item_code)s = '' or mt.item_code = %(item_code)s))
-            or (mt.status = 'Received'
+            or (mt.status = 'Available'
              and (mt.custom_license = %(license)s or ifnull(mt.custom_license, '') = ''))
           )
-        order by field(mt.status, 'Used', 'Received'), mt.name
+        order by field(mt.status, 'Used', 'Available'), mt.name
         limit %(start)s, %(page_len)s
         """,
         {

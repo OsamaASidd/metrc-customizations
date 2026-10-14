@@ -9,23 +9,27 @@
   "license_number",
   "license_name",
   "license_type",
-  "is_active"
+  "is_active",
+  "is_default"
  ],
  "fields": [
   {
    "description": "Unique across all companies.",
    "fieldname": "license_number",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "License Number",
+   "label": "License",
+   "options": "License",
    "reqd": 1,
    "unique": 1
   },
   {
+   "fetch_from": "license_number.licence_name",
    "fieldname": "license_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "License Name"
+   "label": "License Name",
+   "read_only": 1
   },
   {
    "fieldname": "license_type",
@@ -40,13 +44,21 @@
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Active"
+  },
+  {
+   "default": "0",
+   "description": "Fetched onto new Purchase Receipts of this company.",
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Default"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-10-08 13:03:08.696400",
+ "modified": "2026-10-14 11:18:12.733501",
  "modified_by": "Administrator",
  "module": "Metrc Customizations",
  "name": "Company License",
