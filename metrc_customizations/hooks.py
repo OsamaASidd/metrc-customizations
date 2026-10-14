@@ -8,7 +8,7 @@ app_license = "mit"
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["erpnext"]
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
@@ -26,7 +26,18 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/metrc_customizations/css/metrc_customizations.css"
-# app_include_js = "/assets/metrc_customizations/js/metrc_customizations.js"
+app_include_js = [
+    # Shared Muid (Metrc Tag) Link-query filter, keyed off the row's warehouse
+    # License. The Stock Entry / Purchase Receipt / Purchase Invoice / Delivery
+    # Note / Sales Invoice form scripts (cannabis_management) call
+    # cannabis_management.metric_tag.filter_by_warehouse() from here.
+    # NOTE: no build-hash on these paths, so bump ?v= on every content change
+    # or browsers/proxies keep serving the old file.
+    "/assets/metrc_customizations/js/metric_tag_query.js?v=4",
+    # Scan-to-select for Metrc Tag: patches erpnext's shared BarcodeScanner so
+    # scanning a tag's Tag Code/MUID opens a picker of what is in stock under it.
+    "/assets/metrc_customizations/js/metric_tag_scan.js?v=3",
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/metrc_customizations/css/metrc_customizations.css"
@@ -247,3 +258,9 @@ app_license = "mit"
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+
+# Every Metrc custom field / property setter carries module "Metrc Customizations".
+fixtures = [
+    {"dt": "Custom Field", "filters": [["module", "=", "Metrc Customizations"]]},
+    {"dt": "Property Setter", "filters": [["module", "=", "Metrc Customizations"]]},
+]

@@ -1,0 +1,18 @@
+[
+ {
+  "default_value": null,
+  "doc_type": "Metrc Tag",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2026-10-14 09:23:29.119683",
+  "module": "Metrc Customizations",
+  "name": "Metrc Tag-main-field_order",
+  "property": "field_order",
+  "property_type": "Data",
+  "row_name": null,
+  "value": "[\"tag_code\", \"muid\", \"status\", \"item_code\", \"current_qty\", \"uom\", \"column_break_1\", \"warehouse\", \"custom_license\", \"last_transaction_type\", \"last_transaction_id\", \"last_updated\", \"custom_metrc_section\", \"custom_metrc_package_id\", \"custom_metrc_status\", \"custom_metrc_license_number\", \"custom_metrc_cb\", \"custom_metrc_quantity\", \"custom_metrc_uom\", \"custom_metrc_variance\", \"custom_metrc_lab_state\", \"custom_metrc_last_synced\", \"custom_metrc_company\"]"
+ }
+]
